@@ -78,8 +78,12 @@
 	<h1 class="headline">CARDS GAME</h1>
 </body>
 <script language="javascript" type="text/javascript">
+	const cardsDir = "./cards/";
+	const cards = [cardsDir + 'bb8.png', cardsDir + 'cat.png', cardsDir + 'groot.png', cardsDir + 'mario.png' , cardsDir + 'psyduck.png' , cardsDir + 'superman.png', cardsDir + 'transformer.png'];
+	const geekCard = cardsDir + 'geek.png';
+	
 	(function () {
-		var images = ["mario.png", "psyduck.png", "superman.png"];
+		var images = chooseCards(3);
 		var scramOrd = scrabmledOrder(images.length);
 		var image = document.createElement("img");
 		var cardId = "card";
@@ -97,7 +101,7 @@
 				con.appendChild(imgdiv);
 				image = document.createElement("img");
 				image.setAttribute("alt", "");
-				image.setAttribute("src", "geek.png");
+				image.setAttribute("src", geekCard);
 				image.setAttribute("id", cardId);
 				image.setAttribute("onclick", "changeImage(" + cardId + ".id, '" + images[scramOrd[counter-1]] + "')");
 				imgdiv.appendChild(image);
@@ -105,6 +109,29 @@
 			document.body.appendChild(con);
 		}
 	})();
+
+	function changeImage(cardNum, image) {
+		var img = document.getElementById(cardNum).src;
+		geekCardFileName = geekCard.split("/").pop();
+		if ( img.indexOf(geekCardFileName) != -1)
+			document.getElementById(cardNum).src = image;
+		else 
+			document.getElementById(cardNum).src = geekCard;
+	}
+
+	function chooseCards(howManyCards)
+	{
+		var selected = []
+		var blacklist = []
+		while (selected.length < howManyCards){
+			rand = Math.floor(Math.random() * cards.length);
+			if (! blacklist.includes(rand)){
+				blacklist.push(rand);
+				selected.push(cards[rand])
+			}
+		}
+		return selected;
+	}
 
 	function scrabmledOrder(numOfCards){
 		var order = []
@@ -120,19 +147,6 @@
 			}
 		}
 		return order;
-	}
-
-	function changeImage(cardNum, image) {
-		var srcImage = 'geek.png'
-		var img = document.getElementById(cardNum).src;
-		if ( img.indexOf(srcImage)!=-1 ) 
-		{
-			document.getElementById(cardNum).src = image;
-		}
-		else 
-		{
-			document.getElementById(cardNum).src = srcImage;
-		}
 	}
 </script>
 </html>
